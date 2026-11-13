@@ -5,19 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Maximo Madness</title>
 <meta name="description" content="Maximo Madness. Something is brewing.">
+<meta property="og:title" content="Maximo Madness">
+<meta property="og:description" content="Something is brewing.">
+<meta property="og:image" content="https://maximomadness.com/last.jpg">
 <style>
-  :root{color-scheme:dark}
-  html,body{height:100%;margin:0}
-  body{background:#141110;color:#EFE6D8;font-family:Georgia,"Times New Roman",serif;display:grid;place-items:center;text-align:center;padding:16px;box-sizing:border-box}
-  h1{font-weight:400;font-size:clamp(34px,8vw,72px);letter-spacing:.06em;margin:0}
-  h1 span{display:inline-block;transform:rotate(-4deg)}
-  p{margin:18px 0 0;font-size:clamp(15px,3.5vw,19px);letter-spacing:.2em;text-transform:uppercase;color:#A89A88}
+  html,body{margin:0;height:100%;background:#02040a;overflow:hidden}
+  video,.still{position:fixed;inset:0;width:100vw;height:100vh;object-fit:cover;background:#02040a}
+  .still{display:none}
+  .end{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity 1.6s ease;background:radial-gradient(ellipse at center,rgba(0,0,0,.45),rgba(0,0,0,0) 70%)}
+  .end.on{opacity:1}
+  .end div{text-align:center;color:#F4EADB;font-family:Georgia,"Times New Roman",serif;text-shadow:0 2px 18px rgba(0,0,0,.9);padding:16px}
+  .end h1{margin:0;font-weight:400;font-size:clamp(34px,8vw,84px);letter-spacing:.06em}
+  .end h1 span{display:inline-block;transform:rotate(-5deg)}
+  .end p{margin:14px 0 0;font-size:clamp(14px,3.2vw,19px);letter-spacing:.22em;text-transform:uppercase;color:#E2D3BC}
+  .end button,.go{pointer-events:auto;margin-top:26px;background:rgba(0,0,0,.4);color:#F4EADB;border:1px solid rgba(244,234,219,.6);border-radius:999px;padding:10px 22px;font:15px Georgia,serif;letter-spacing:.12em;cursor:pointer}
+  .end button:hover,.go:hover{background:rgba(244,234,219,.15)}
+  .go{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;display:none}
 </style>
 </head>
 <body>
-<main>
-  <h1>Maximo Mad<span>n</span>ess</h1>
-  <p>Something is brewing</p>
-</main>
+<video id="v" src="maximo-madness.mp4" poster="" muted playsinline autoplay preload="auto" aria-label="An old cowboy rides a rocket up from Earth, roars past and leaves a storm of dollar bills"></video>
+<img class="still" id="still" src="last.jpg" alt="">
+<button class="go" id="go" type="button">Launch</button>
+<div class="end" id="end"><div><h1>Maximo Mad<span>n</span>ess</h1><p>Something is brewing</p><button id="again" type="button">Fly again</button></div></div>
+<script>
+(()=>{
+  const v=document.getElementById('v'), end=document.getElementById('end'), go=document.getElementById('go');
+  const play=()=>{end.classList.remove('on'); go.style.display='none'; v.currentTime=0; const p=v.play(); if(p&&p.catch) p.catch(()=>{go.style.display='block'})};
+  v.addEventListener('ended',()=>end.classList.add('on'));
+  document.getElementById('again').onclick=play; go.onclick=play;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay'); v.pause(); v.style.display='none'; document.getElementById('still').style.display='block'; end.classList.add('on'); return}
+  const p=v.play(); if(p&&p.catch) p.catch(()=>{go.style.display='block'});
+})();
+</script>
 </body>
 </html>
